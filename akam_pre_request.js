@@ -87,7 +87,7 @@ function generateSignatureData(ReqType,BaseURL,ReqPath,Data,ClientToken,AccessTo
 
     return SignatureData;
   }
-}
+};
 
 // Generate Authorization Header - Result of this function have to set into request header
 function generateAuthorizationHeader(ClientToken,AccessToken,TimeStamp,Nonce,Signature) {
@@ -99,7 +99,7 @@ function generateAuthorizationHeader(ClientToken,AccessToken,TimeStamp,Nonce,Sig
   AuthorizationHeader += "signature=" + Signature;
 
   return AuthorizationHeader;
-}
+};
 
 // Generate Hash - Using sandbox CryptoJS library
 function generateHash(key,data) {
@@ -107,7 +107,7 @@ function generateHash(key,data) {
   signature = signature.toString(CryptoJS.enc.Base64);
 
   return signature;
-}
+};
 
 // Send request to API endpoint
 function submitRequest() {
@@ -130,6 +130,6 @@ function submitRequest() {
 
   // Add created authorization header as a Header of postman collecitons
   postman.setEnvironmentVariable('authorizationHeader', AuthorizationHeader);
-}
+};
 
 submitRequest();
