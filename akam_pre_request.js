@@ -17,33 +17,33 @@ var credentials = {
 // Define variables for calling Akamai API
 var endpoint = {
   method: request.method,
-  host: postman.getEnvironmentVariable("baseURL"),
+  host: credentials.baseURL,
   scheme: request.url.substring(0, request.url.indexOf("://")-1),
   reqPath: request.url.substring(request.url.indexOf(credentials.baseURL) + credentials.baseURL.length, request.url.length)
 }
 
 // Enhancing Date to have formatting functionality
-Date.prototype.format = function(f) { 
-  if (!this.valueOf()) return " "; 
+Date.prototype.format = function(f) {
+  if (!this.valueOf()) return " ";
 
-  var weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; 
-  var d = this; 
+  var weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var d = this;
 
-  return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) { 
-    switch ($1) { 
-      case "yyyy": return d.getFullYear(); 
-      case "yy": return (d.getFullYear() % 1000).zf(2); 
-      case "MM": return (d.getMonth() + 1).zf(2); 
-      case "dd": return d.getDate().zf(2); 
-      case "E": return weekName[d.getDay()]; 
-      case "HH": return d.getHours().zf(2); 
-      case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2); 
-      case "mm": return d.getMinutes().zf(2); 
-      case "ss": return d.getSeconds().zf(2); 
-      case "a/p": return d.getHours() < 12 ? "AM" : "PM"; 
-      default: return $1; 
-    } 
-  }); 
+  return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+    switch ($1) {
+      case "yyyy": return d.getFullYear();
+      case "yy": return (d.getFullYear() % 1000).zf(2);
+      case "MM": return (d.getMonth() + 1).zf(2);
+      case "dd": return d.getDate().zf(2);
+      case "E": return weekName[d.getDay()];
+      case "HH": return d.getHours().zf(2);
+      case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2);
+      case "mm": return d.getMinutes().zf(2);
+      case "ss": return d.getSeconds().zf(2);
+      case "a/p": return d.getHours() < 12 ? "AM" : "PM";
+      default: return $1;
+    }
+  });
 };
 
 // Utility functions for Date formatter
@@ -78,13 +78,13 @@ function generateSignatureData(ReqType,BaseURL,ReqPath,Data,ClientToken,AccessTo
     var SignatureData = ReqType + String.fromCharCode(9);
     SignatureData += "https" + String.fromCharCode(9);
     SignatureData +=  BaseURL + String.fromCharCode(9);
-    SignatureData +=  ReqPath +  String.fromCharCode(9) + String.fromCharCode(9) + String.fromCharCode(9);  
+    SignatureData +=  ReqPath +  String.fromCharCode(9) + String.fromCharCode(9) + String.fromCharCode(9);
     SignatureData += "EG1-HMAC-SHA256 "
     SignatureData += "client_token=" + ClientToken + ";"
     SignatureData += "access_token=" + AccessToken + ";"
     SignatureData += "timestamp=" + TimeStamp  + ";"
     SignatureData += "nonce=" + Nonce + ";"
-    
+
     return SignatureData;
   }
 }
@@ -105,11 +105,11 @@ function generateAuthorizationHeader(ClientToken,AccessToken,TimeStamp,Nonce,Sig
 function generateHash(key,data) {
   var signature = CryptoJS.HmacSHA256(data, key);
   signature = signature.toString(CryptoJS.enc.Base64);
-  
+
   return signature;
 }
 
-// Send request to API endpoint 
+// Send request to API endpoint
 function submitRequest() {
   ClientToken = credentials.clientToken;
   AccessToken = credentials.accessToken;
@@ -118,7 +118,7 @@ function submitRequest() {
   ReqPath = endpoint.reqPath;
   ReqType = endpoint.method;
   Data = request.data;
-  
+
   var d = new Date();
   var month = d.getUTCMonth()+1;
   var TimeStamp = d.getUTCFullYear() + month.zf(2) + d.getUTCDate().zf(2) + "T" + d.getUTCHours().zf(2) + ":" + d.getUTCMinutes().zf(2) + ":" + d.getUTCSeconds().zf(2) + "+0000";
