@@ -12,7 +12,7 @@ var credentials = {
   accessToken: postman.getEnvironmentVariable("accessToken"),
   clientToken: postman.getEnvironmentVariable("clientToken"),
   clientSecret: postman.getEnvironmentVariable("clientSecret")
-}
+};
 
 // Define variables for calling Akamai API
 var endpoint = {
@@ -20,7 +20,7 @@ var endpoint = {
   host: credentials.baseURL,
   scheme: request.url.substring(0, request.url.indexOf("://")-1),
   reqPath: request.url.substring(request.url.indexOf(credentials.baseURL) + credentials.baseURL.length, request.url.length)
-}
+};
 
 // Enhancing Date to have formatting functionality
 Date.prototype.format = function(f) {
@@ -66,11 +66,11 @@ function generateSignatureData(ReqType,BaseURL,ReqPath,Data,ClientToken,AccessTo
     SignatureData +=  ReqPath +  String.fromCharCode(9);
     //SignatureData += String.fromCharCode(9) + CryptoJS.enc.Base64.stringify(CryptoJS.SHA256(Data)) + String.fromCharCode(9);
     SignatureData += String.fromCharCode(9) + CryptoJS.SHA256(Data).toString(CryptoJS.enc.Base64) + String.fromCharCode(9);
-    SignatureData += "EG1-HMAC-SHA256 "
-    SignatureData += "client_token=" + ClientToken + ";"
-    SignatureData += "access_token=" + AccessToken + ";"
-    SignatureData += "timestamp=" + TimeStamp  + ";"
-    SignatureData += "nonce=" + Nonce + ";"
+    SignatureData += "EG1-HMAC-SHA256 ";
+    SignatureData += "client_token=" + ClientToken + ";";
+    SignatureData += "access_token=" + AccessToken + ";";
+    SignatureData += "timestamp=" + TimeStamp  + ";";
+    SignatureData += "nonce=" + Nonce + ";";
 
     return SignatureData;
   }
@@ -79,11 +79,11 @@ function generateSignatureData(ReqType,BaseURL,ReqPath,Data,ClientToken,AccessTo
     SignatureData += "https" + String.fromCharCode(9);
     SignatureData +=  BaseURL + String.fromCharCode(9);
     SignatureData +=  ReqPath +  String.fromCharCode(9) + String.fromCharCode(9) + String.fromCharCode(9);
-    SignatureData += "EG1-HMAC-SHA256 "
-    SignatureData += "client_token=" + ClientToken + ";"
-    SignatureData += "access_token=" + AccessToken + ";"
-    SignatureData += "timestamp=" + TimeStamp  + ";"
-    SignatureData += "nonce=" + Nonce + ";"
+    SignatureData += "EG1-HMAC-SHA256 ";
+    SignatureData += "client_token=" + ClientToken + ";";
+    SignatureData += "access_token=" + AccessToken + ";";
+    SignatureData += "timestamp=" + TimeStamp  + ";";
+    SignatureData += "nonce=" + Nonce + ";";
 
     return SignatureData;
   }
@@ -91,12 +91,12 @@ function generateSignatureData(ReqType,BaseURL,ReqPath,Data,ClientToken,AccessTo
 
 // Generate Authorization Header - Result of this function have to set into request header
 function generateAuthorizationHeader(ClientToken,AccessToken,TimeStamp,Nonce,Signature) {
-  var AuthorizationHeader = "EG1-HMAC-SHA256 "
-  AuthorizationHeader += "client_token=" + ClientToken + ";"
-  AuthorizationHeader += "access_token=" + AccessToken + ";"
-  AuthorizationHeader += "timestamp=" + TimeStamp + ";"
-  AuthorizationHeader += "nonce=" + Nonce + ";"
-  AuthorizationHeader += "signature=" + Signature
+  var AuthorizationHeader = "EG1-HMAC-SHA256 ";
+  AuthorizationHeader += "client_token=" + ClientToken + ";";
+  AuthorizationHeader += "access_token=" + AccessToken + ";";
+  AuthorizationHeader += "timestamp=" + TimeStamp + ";";
+  AuthorizationHeader += "nonce=" + Nonce + ";";
+  AuthorizationHeader += "signature=" + Signature;
 
   return AuthorizationHeader;
 }
