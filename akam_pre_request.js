@@ -59,34 +59,20 @@ var guid = (function() {
 
 // Generate Akamai signature Data
 function generateSignatureData(ReqType,BaseURL,ReqPath,Data,ClientToken,AccessToken,TimeStamp,Nonce) {
+  var SignatureData = ReqType + String.fromCharCode(9);
+  SignatureData += "https" + String.fromCharCode(9);
+  SignatureData +=  BaseURL + String.fromCharCode(9);
+  SignatureData +=  ReqPath +  String.fromCharCode(9);
   if ((ReqType == "POST") || (ReqType == "PUT")) {
-    var SignatureData = ReqType + String.fromCharCode(9);
-    SignatureData += "https" + String.fromCharCode(9);
-    SignatureData +=  BaseURL + String.fromCharCode(9);
-    SignatureData +=  ReqPath +  String.fromCharCode(9);
     //SignatureData += String.fromCharCode(9) + CryptoJS.enc.Base64.stringify(CryptoJS.SHA256(Data)) + String.fromCharCode(9);
     SignatureData += String.fromCharCode(9) + CryptoJS.SHA256(Data).toString(CryptoJS.enc.Base64) + String.fromCharCode(9);
-    SignatureData += "EG1-HMAC-SHA256 ";
-    SignatureData += "client_token=" + ClientToken + ";";
-    SignatureData += "access_token=" + AccessToken + ";";
-    SignatureData += "timestamp=" + TimeStamp  + ";";
-    SignatureData += "nonce=" + Nonce + ";";
-
-    return SignatureData;
   }
-  else {
-    var SignatureData = ReqType + String.fromCharCode(9);
-    SignatureData += "https" + String.fromCharCode(9);
-    SignatureData +=  BaseURL + String.fromCharCode(9);
-    SignatureData +=  ReqPath +  String.fromCharCode(9) + String.fromCharCode(9) + String.fromCharCode(9);
-    SignatureData += "EG1-HMAC-SHA256 ";
-    SignatureData += "client_token=" + ClientToken + ";";
-    SignatureData += "access_token=" + AccessToken + ";";
-    SignatureData += "timestamp=" + TimeStamp  + ";";
-    SignatureData += "nonce=" + Nonce + ";";
-
-    return SignatureData;
-  }
+  SignatureData += "EG1-HMAC-SHA256 ";
+  SignatureData += "client_token=" + ClientToken + ";";
+  SignatureData += "access_token=" + AccessToken + ";";
+  SignatureData += "timestamp=" + TimeStamp  + ";";
+  SignatureData += "nonce=" + Nonce + ";";
+  return SignatureData;
 };
 
 // Generate Authorization Header - Result of this function have to set into request header
